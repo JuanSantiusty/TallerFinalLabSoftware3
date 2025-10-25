@@ -1,0 +1,42 @@
+<div class="catalog-container container-fluid">
+  <div class="row g-0">
+    <!-- Sección de Filtros -->
+    <div class="col-12 col-sm-2 col-md-4">
+      <div class="filters-section">
+        <h3 class="filters-title">Filtros</h3>
+        <div class="filter-options">
+            <select class="form-control" [(ngModel)]="categoriaSeleccionada" name="categoria" id="servicesFilter" (change)="onCategoriaChange()">
+              <option [ngValue]="null" disabled>Seleccione una categoría</option>
+              <option *ngFor="let categoria of categorias" [ngValue]="categoria">
+                {{ categoria.nombre }}
+              </option>
+            </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Servicios -->
+    <div class="col-12 col-sm-10 col-md-8">
+      <div class="services-section">
+        <h2 class="services-title">Nuestros Servicios</h2>
+        <div class="row g-3">
+          <!-- Servicio 1 -->
+          <div class="col-12 col-sm-6 col-md-4 col-lg-2" *ngFor="let cliente of clientes">
+            <div class="service-card">
+              <div class="service-image">
+                <img src="https://via.placeholder.com/300x200/5F6366/FBFFFF?text=Corte+Caballero" 
+                     alt="Imagen Bonita" class="img-fluid">
+              </div>
+              <div class="service-info">
+                <h4 class="service-name">{{cliente.nombre}}</h4>
+                <p class="service-price">{{cliente.apellido}}</p>
+                <button class="btn-buy img-fluis">Comprar</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
