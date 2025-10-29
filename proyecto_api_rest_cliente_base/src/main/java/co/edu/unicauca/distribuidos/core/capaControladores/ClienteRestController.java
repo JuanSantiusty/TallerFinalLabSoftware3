@@ -3,6 +3,7 @@ package co.edu.unicauca.distribuidos.core.capaControladores;
 
 import java.util.List;
 
+import co.edu.unicauca.distribuidos.core.fachadaServices.DTO.CategoriaDTOPeticion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -56,14 +57,28 @@ public class ClienteRestController {
 		return objServicio;
 	}
 
-	@PutMapping("/servicio/{id}")
-	public ServicioDTORespuesta actualizarCliente(@RequestBody ServicioDTOPeticion cliente, @PathVariable Integer id) {
-		ServicioDTORespuesta objCliente = null;
-		ServicioDTORespuesta clienteActual = servicioService.findById(id);
-		if (clienteActual != null) {
-			objCliente = servicioService.update(id, cliente);
-		}
-		return objCliente;
+	@PutMapping(value = "/servicio/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ServicioDTORespuesta actualizarServicio(
+			@PathVariable Integer id,
+			@RequestParam("nombre") String nombre,
+			@RequestParam("descripcion") String descripcion,
+			@RequestParam("precio") Float precio,
+			@RequestParam("idCategoria") Integer idCategoria,
+			@RequestParam(value = "imagen", required = false) MultipartFile imagen) {
+
+		ServicioDTOPeticion servicioDTO = new ServicioDTOPeticion();
+		servicioDTO.setNombre(nombre);
+		servicioDTO.setDescripcion(descripcion);
+		servicioDTO.setPrecio(precio);
+
+		CategoriaDTOPeticion categoriaDTO = new CategoriaDTOPeticion();
+		categoriaDTO.setId(idCategoria);
+		servicioDTO.setIdCategoria(idCategoria);
+
+		servicioDTO.setImagenFile(imagen); // Puede ser null si no se envía nueva imagen
+
+		ServicioDTORespuesta objServicio = servicioService.update(id, servicioDTO);
+		return objServicio;
 	}
 
 	@DeleteMapping("/servicio/{id}")

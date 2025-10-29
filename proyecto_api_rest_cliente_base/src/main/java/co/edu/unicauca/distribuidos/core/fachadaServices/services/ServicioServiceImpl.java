@@ -140,24 +140,48 @@ public class ServicioServiceImpl implements IServicioService {
 	}
 
 	@Override
-	public ServicioDTORespuesta update(Integer id, ServicioDTOPeticion servicio) {
-		ServicioEntity servicioActualizado=null;
-		Optional<ServicioEntity> clienteEntityOp = this.servicioAccesoBaseDatos.findById(id);
+	public ServicioDTORespuesta update(Integer id, ServicioDTOPeticion servicioDTO) {
+		ServicioEntity servicioActualizado = null;
+		Optional<ServicioEntity> servicioEntityOp = this.servicioAccesoBaseDatos.findById(id);
 
-		if(clienteEntityOp.isPresent())
-		{
-			ServicioEntity objCLienteDatosNuevos=clienteEntityOp.get();
-			objCLienteDatosNuevos.setNombre(servicio.getNombre());
-			objCLienteDatosNuevos.setDescripcion(servicio.getDescripcion());
-			objCLienteDatosNuevos.setPrecio(servicio.getPrecio());
-			objCLienteDatosNuevos.getObjCategoria().setId(servicio.getIdCategoria());
-			objCLienteDatosNuevos.getObjCategoria().setNombre("");
+		if(servicioEntityOp.isPresent()) {
+			ServicioEntity objServicioExistente = servicioEntityOp.get();
 
-			Optional<ServicioEntity> optionalCliente = this.servicioAccesoBaseDatos.update(id, objCLienteDatosNuevos);
-			servicioActualizado=optionalCliente.get();
+			// Actualizar campos básicos
+			objServicioExistente.setNombre(servicioDTO.getNombre());
+			objServicioExistente.setDescripcion(servicioDTO.getDescripcion());
+			objServicioExistente.setPrecio(servicioDTO.getPrecio());
+			objServicioExistente.setObjCategoria(new CategoriaEntity(servicioDTO.getIdCategoria(),""));
+
+			// Actualizar categoría
+			if (servicioDTO.getIdCategoria() != null) {
+				CategoriaEntity categoriaEntity = new CategoriaEntity();
+				categoriaEntity.setId(servicioDTO.getIdCategoria());
+				objServicioExistente.setObjCategoria(categoriaEntity);
+			}
+
+			// Manejar la imagen: si se envía nueva imagen, guardarla y actualizar ruta
+			if (servicioDTO.getImagenFile() != null && !servicioDTO.getImagenFile().isEmpty()) {
+				try {
+					String rutaImagen = guardarImagen(servicioDTO.getImagenFile());
+					objServicioExistente.setImagen(rutaImagen);
+				} catch (IOException e) {
+					System.out.println("Error al guardar la nueva imagen: " + e.getMessage());
+					// Puedes decidir si lanzar excepción o continuar con la imagen anterior
+				}
+			}
+			// Si no se envía nueva imagen, se mantiene la imagen existente
+
+
+			Optional<ServicioEntity> optionalServicio = this.servicioAccesoBaseDatos.update(id, objServicioExistente);
+			if (optionalServicio.isPresent()) {
+				servicioActualizado = optionalServicio.get();
+			}
 		}
 
-		return this.modelMapper.map(servicioActualizado, ServicioDTORespuesta.class);
+		return servicioActualizado != null ?
+				this.modelMapper.map(servicioActualizado, ServicioDTORespuesta.class) :
+				null;
 	}
 
 	@Override
