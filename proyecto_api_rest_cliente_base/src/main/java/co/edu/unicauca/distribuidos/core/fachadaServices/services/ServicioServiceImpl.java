@@ -116,7 +116,8 @@ public class ServicioServiceImpl implements IServicioService {
 
 	private String guardarImagen(MultipartFile imagen) throws IOException {
 		// Crear directorio si no existe
-		String uploadDir = "C:\\Users\\usuario\\Pictures\\imagenesServicio";
+		String userHome = System.getProperty("user.home");
+		String uploadDir = userHome + "\\Pictures\\imagenesServicio";
 		File directory = new File(uploadDir);
 		if (!directory.exists()) {
 			directory.mkdirs();
