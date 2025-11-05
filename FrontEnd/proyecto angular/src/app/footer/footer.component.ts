@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, RouterLink],
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css'
+  styleUrls: ['./footer.component.css']
 })
 export class FooterComponent {
-  public proyecto: any = {anio: '2024', nombreProyecto: 'Proyecto de Clase'};
-  public tecnologia: any = {leyenda: 'WebApp desarrollada con ', tec1: 'Angular ', tec2: 'Spring-Spring Boot'};
-  public autor: string = 'Desarrollado por ...';
-}
 
+  public proyecto = { anio: '2024', nombreProyecto: 'Luxury Barber' };
+  public tecnologia = { leyenda: 'WebApp desarrollada con ', tec1: 'Angular ', tec2: 'Spring Boot' };
+  public autor = 'Desarrollado por Tu Nombre Aquí';
+  
+}

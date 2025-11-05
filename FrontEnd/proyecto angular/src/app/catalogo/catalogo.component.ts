@@ -1,52 +1,67 @@
 import { Component } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { Categoria } from '../categorias/modelos/categoria';
 import { categoriaService } from '../categorias/servicios/categoria.service';
-import { Cliente } from '../clientes/modelos/cliente';
-import { ClienteService } from '../clientes/servicios/cliente.service';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
+import { Producto } from '../productos/modelos/Producto';
+import { ProductoService } from '../productos/servicios/Producto.service';
 
 @Component({
   selector: 'app-catalogo',
   standalone: true,
-  imports: [FormsModule,HttpClientModule,CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './catalogo.component.html',
-  styleUrl: './catalogo.component.css'
+  styleUrls: ['./catalogo.component.css']
 })
 export class CatalogoComponent {
-  public clientes: Cliente[] = [];
-  public categorias: Categoria[] = [];
-  public categoriaSeleccionada: string = '';
 
-  constructor(private categoriaService: categoriaService, private clienteService: ClienteService, private objClienteService: ClienteService) { }
+  // Datos
+  public categorias: Categoria[] = [];
+  public productos: Producto[] = [];
+  public productosFiltrados: Producto[] = [];
+
+  // Filtro
+  public categoriaSeleccionada: number | 'Todo' = 'Todo';
+
+  constructor(
+    private categoriaSrv: categoriaService,
+    private productoSrv: ProductoService
+  ) {}
 
   ngOnInit(): void {
-    this.categoriaSeleccionada = 'Todo';
-    this.categoriaService.getCategorias().subscribe(
-      categorias => this.categorias = categorias      
-    );    
-    this.filtrarClientes();
+    this.cargarCategorias();
+    this.cargarProductos();
   }
 
-   onCategoriaChange(): void {
-    this.filtrarClientes();
+  private cargarCategorias(): void {
+    this.categoriaSrv.getCategorias().subscribe({
+      next: (cats) => this.categorias = cats ?? [],
+      error: (err) => console.error('Error cargando categorías:', err)
+    });
   }
 
-    filtrarClientes(): void {
-    if (!this.categoriaSeleccionada || this.categoriaSeleccionada != 'Todo') {
-      this.objClienteService.getClientes().subscribe(
-        clientes => {
-          this.clientes = clientes;
-        }
-      );
-    } else {
-      this.objClienteService.getClientes().subscribe(
-        clientes => {
-          this.clientes = clientes;
-        }
-      );
+  private cargarProductos(): void {
+    this.productoSrv.getProductos().subscribe({
+      next: (prods) => {
+        this.productos = prods ?? [];
+        this.aplicarFiltro();
+      },
+      error: (err) => console.error('Error cargando productos:', err)
+    });
+  }
+
+  onCategoriaChange(): void {
+    this.aplicarFiltro();
+  }
+
+  private aplicarFiltro(): void {
+    if (this.categoriaSeleccionada === 'Todo') {
+      this.productosFiltrados = [...this.productos];
+      return;
     }
+    const idCat = Number(this.categoriaSeleccionada);
+    this.productosFiltrados = this.productos.filter(p => p.objCategoria?.id === idCat);
   }
-
 }

@@ -1,0 +1,70 @@
+<div class="card bg-dark text-white">
+  <div class="card-header">{{ titulo }}</div>
+  <div class="card-body">
+
+    <form (ngSubmit)="crearProducto()">
+      <!-- Nombre -->
+      <div class="form-group row">
+        <label for="nombre" class="col-form-label col-sm-2">Nombre</label>
+        <div class="col-sm-6">
+          <input id="nombre" type="text" class="form-control"
+                 [(ngModel)]="producto.nombre" name="nombre" required>
+        </div>
+      </div>
+
+      <!-- Descripción  -->
+      <div class="form-group row">
+        <label for="descripcion" class="col-form-label col-sm-2">Descripción</label>
+        <div class="col-sm-6">
+          <textarea id="descripcion" class="form-control" rows="3"
+                    [(ngModel)]="producto.descripcion" name="descripcion" required></textarea>
+        </div>
+      </div>
+
+      <!-- Precio -->
+      <div class="form-group row">
+        <label for="precio" class="col-form-label col-sm-2">Precio (COP)</label>
+        <div class="col-sm-6">
+          <input id="precio" type="number" min="0" step="1000" class="form-control"
+                 [(ngModel)]="producto.precio" name="precio" required>
+        </div>
+      </div>
+
+      <!-- Categoría -->
+      <div class="form-group row">
+        <label for="categoria" class="col-form-label col-sm-2">Categoría</label>
+        <div class="col-sm-6">
+          <select id="categoria" class="form-control"
+                  [(ngModel)]="producto.idCategoria" name="idCategoria" required>
+            <option [ngValue]="0" disabled>Seleccione una categoría</option>
+            <option *ngFor="let categoria of categorias" [ngValue]="categoria.id">
+              {{ categoria.nombre }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Imagen -->
+      <div class="form-group row">
+        <label for="imagen" class="col-form-label col-sm-2">Imagen</label>
+        <div class="col-sm-6">
+          <input id="imagen" type="file" class="form-control-file"
+                 (change)="onFileChange($event)" accept="image/*">
+          <!-- (Opcional) Vista previa -->
+          <div *ngIf="previewUrl" class="mt-2">
+            <img [src]="previewUrl" alt="Vista previa" style="max-width:220px; max-height:160px; border-radius:6px;">
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="form-group row mt-3">
+        <div class="col-sm-6">
+          <button type="submit" class="btn btn-primary">Crear</button>
+          <a class="btn btn-secondary ml-2" [routerLink]="['/productos/listarProductos']">Cancelar</a>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>

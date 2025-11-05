@@ -1,0 +1,65 @@
+<div class="my-2 text-left">
+  <button
+    class="btn btn-rounded btn-primary btncrear"
+    type="button"
+    [routerLink]="['/productos/crearProducto']">
+    Crear Producto
+  </button>
+</div>
+
+<div class="card text-white bg-primary mb-3">
+  <div class="card-header">Productos</div>
+
+  <div class="card-body">
+    <h5 class="card-title">Listado de productos</h5>
+
+    <!-- ✅ Evita error: verificamos que productos exista -->
+    <div *ngIf="!productos || productos.length === 0" class="alert alert-info">
+      No hay productos registrados.
+    </div>
+
+    <!-- ✅ Mostrar grid solo si hay productos -->
+    <div class="row" *ngIf="productos && productos.length > 0">
+      <div
+        class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+        *ngFor="let p of productos; trackBy: trackById">
+
+        <div class="card h-100 shadow-sm product-card">
+
+          <img
+            [src]="p.imagen || 'assets/images/Fondo.jfif'"
+            (error)="onImgError($event)"
+            class="card-img-top"
+            alt="Imagen del producto">
+
+          <div class="card-body text-dark">
+
+            <h5 class="card-title text-primary fw-bold text-truncate" [title]="p.nombre">
+              {{ p.nombre }}
+            </h5>
+
+            <p class="card-text product-desc text-truncate" [title]="p.descripcion">
+              {{ p.descripcion }}
+            </p>
+
+            <span class="badge bg-secondary">
+              {{ p.objCategoria?.nombre || 'Sin categoría' }}
+            </span>
+
+            <p class="mt-2 fw-bold mb-0">
+              {{ p.precio | currency:'COP':'symbol-narrow' }}
+            </p>
+
+          </div>
+
+          <div class="card-footer d-flex justify-content-between">
+            <button class="btn btn-warning btn-sm" (click)="editarProducto(p.id)">Editar</button>
+            <button class="btn btn-danger btn-sm" (click)="eliminarProducto(p.id)">Eliminar</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

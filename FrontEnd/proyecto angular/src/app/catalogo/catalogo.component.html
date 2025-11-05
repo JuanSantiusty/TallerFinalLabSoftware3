@@ -5,37 +5,68 @@
       <div class="filters-section">
         <h3 class="filters-title">Filtros</h3>
         <div class="filter-options">
-            <select class="form-control" [(ngModel)]="categoriaSeleccionada" name="categoria" id="servicesFilter" (change)="onCategoriaChange()">
-              <option [ngValue]="null" disabled>Seleccione una categoría</option>
-              <option *ngFor="let categoria of categorias" [ngValue]="categoria">
-                {{ categoria.nombre }}
-              </option>
-            </select>
+          <select
+            class="form-control"
+            [(ngModel)]="categoriaSeleccionada"
+            name="categoria"
+            id="servicesFilter"
+            (change)="onCategoriaChange()">
+            <!-- Mantiene el tipo: 'Todo' (string) y números con ngValue -->
+            <option [ngValue]="'Todo'">Todas</option>
+            <option *ngFor="let c of categorias" [ngValue]="c.id">
+              {{ c.nombre }}
+            </option>
+          </select>
         </div>
       </div>
     </div>
 
-    <!-- Sección de Servicios -->
+    <!-- Sección de Productos -->
     <div class="col-12 col-sm-10 col-md-8">
       <div class="services-section">
-        <h2 class="services-title">Nuestros Servicios</h2>
-        <div class="row g-3">
-          <!-- Servicio 1 -->
-          <div class="col-12 col-sm-6 col-md-4 col-lg-2" *ngFor="let cliente of clientes">
-            <div class="service-card">
+        <h2 class="services-title">Nuestros Productos</h2>
+
+        <!-- Mensaje si no hay productos -->
+        <div *ngIf="productosFiltrados.length === 0" class="alert alert-info">
+          No hay productos para la categoría seleccionada.
+        </div>
+
+        <!-- Grid de tarjetas -->
+        <div class="row g-3" *ngIf="productosFiltrados.length > 0">
+          <div class="col-12 col-sm-4 col-md-3 col-lg-2" *ngFor="let p of productosFiltrados">
+            <div class="service-card h-100 d-flex flex-column">
               <div class="service-image">
-                <img src="https://via.placeholder.com/300x200/5F6366/FBFFFF?text=Corte+Caballero" 
-                     alt="Imagen Bonita" class="img-fluid">
+                <img
+                  [src]="p.imagen || 'assets/images/Fondo.jfif'"
+                  onerror="this.onerror=null;this.src='assets/images/Fondo.jfif';"
+                  [alt]="'Imagen de ' + p.nombre"
+                  class="img-fluid"
+                  style="height: 140px; width: 100%; object-fit: cover; border-radius: 6px;">
               </div>
-              <div class="service-info">
-                <h4 class="service-name">{{cliente.nombre}}</h4>
-                <p class="service-price">{{cliente.apellido}}</p>
-                <button class="btn-buy img-fluis">Comprar</button>
+
+              <div class="service-info mt-2">
+                <h4 class="service-name text-truncate" [title]="p.nombre">{{ p.nombre }}</h4>
+
+                <p class="service-category mb-1">
+                  <span class="badge bg-secondary">
+                    {{ p.objCategoria?.nombre || 'Sin categoría' }}
+                  </span>
+                </p>
+
+                <p class="service-price fw-bold mb-2">
+                  {{ p.precio | currency:'COP':'symbol-narrow' }}
+                </p>
+
+                <p class="service-desc text-truncate" [title]="p.descripcion">
+                  {{ p.descripcion }}
+                </p>
+
+                <button class="btn btn-primary btn-sm w-100">Comprar</button>
               </div>
             </div>
           </div>
-
         </div>
+        <!-- /Grid -->
       </div>
     </div>
   </div>

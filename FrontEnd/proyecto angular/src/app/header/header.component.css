@@ -143,3 +143,15 @@
     font-size: 1rem;
   }
 }
+/* Botones de cambio de vista */
+.custom-navbar .btn {
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.custom-navbar .btn:hover {
+  transform: scale(1.05);
+}

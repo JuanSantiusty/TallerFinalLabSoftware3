@@ -1,14 +1,24 @@
 import { Routes } from '@angular/router';
-import { ClientesComponent } from './clientes/listarClientes/clientes.component';
-import { FormComponent } from './clientes/crearClientes/form.component';
-import { FormActualizarComponent } from './clientes/actualizarClientes/form-actualizar.component';
+import { ProductosComponent } from './productos/listarProductos/productos.component';
+import { FormProductoComponent } from './productos/crearProductos/form.component';
+import { FormActualizarComponent } from './productos/actualizarProductos/form-actualizar.component';
 import { CatalogoComponent } from './catalogo/catalogo.component';
 
 export const routes: Routes = [
-    {path: '', redirectTo: '/clientes/listarCLientes', pathMatch: 'full'},
-    {path: 'clientes/listarCLientes', component: ClientesComponent},
-    {path: 'cliente/crearClientes', component: FormComponent},
-    {path: 'clientes/actualizar/:id', component: FormActualizarComponent },
-    {path: 'catalogo', component: CatalogoComponent}
-];
+  { path: '', redirectTo: '/productos/listarProductos', pathMatch: 'full' },
 
+  // LISTAR
+  { path: 'productos/listarProductos', component: ProductosComponent },
+
+  // CREAR
+  { path: 'productos/crearProducto', component: FormProductoComponent },
+
+  // ACTUALIZAR
+  { path: 'productos/editarProducto/:id', component: FormActualizarComponent },
+
+  // CATÁLOGO
+  { path: 'catalogo', component: CatalogoComponent },
+
+  // WILDCARD
+  { path: '**', redirectTo: '/productos/listarProductos' }
+];
