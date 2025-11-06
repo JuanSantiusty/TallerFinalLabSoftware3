@@ -4,7 +4,7 @@ export class Producto {
   id!: number;
   nombre!: string;
   descripcion!: string;
-  precio!: number;
-  objCategoria: Categoria | null = null;  
+  precio!: number; 
   imagen!: string;
+  objCategoria: Categoria | null = null; 
 }

@@ -37,7 +37,7 @@
             <div class="service-card h-100 d-flex flex-column">
               <div class="service-image">
                 <img
-                  [src]="p.imagen || 'assets/images/Fondo.jfif'"
+                  [src]="getImageUrl(p.imagen)"
                   onerror="this.onerror=null;this.src='assets/images/Fondo.jfif';"
                   [alt]="'Imagen de ' + p.nombre"
                   class="img-fluid"

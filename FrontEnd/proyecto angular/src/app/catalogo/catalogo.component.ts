@@ -56,6 +56,11 @@ export class CatalogoComponent {
     this.aplicarFiltro();
   }
 
+   getImageUrl(imagenNombre: string): string {
+    console.log('Obteniendo URL de imagen para:', imagenNombre);
+    return this.productoSrv.getImageUrl(imagenNombre);
+  }
+
   private aplicarFiltro(): void {
     if (this.categoriaSeleccionada === 'Todo') {
       this.productosFiltrados = [...this.productos];

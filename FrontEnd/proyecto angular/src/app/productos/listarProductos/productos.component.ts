@@ -68,6 +68,11 @@ export class ProductosComponent {
     }
   }
 
+  getImageUrl(imagenNombre: string): string {
+    console.log('Obteniendo URL de imagen para:', imagenNombre);
+    return this.productoService.getImageUrl(imagenNombre);
+  }
+
   trackById(index: number, item: Producto) {
   return item.id;
 }

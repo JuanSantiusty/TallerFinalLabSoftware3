@@ -17,6 +17,7 @@ export class ProductoService {
   // Ajusta este endpoint a lo que tu back realmente expone
   // Si tu backend es /api/productos, cambia aquí:
   private urlEndPoint = 'http://localhost:5000/api/servicio';
+  private urlUploads = 'http://localhost:5000/uploads'; 
 
   constructor(private http: HttpClient) {}
 
@@ -98,6 +99,13 @@ export class ProductoService {
     }
     if (dto.imagen) form.append('imagen', dto.imagen); // nombre exacto que espera tu back
     return form;
+  }
+
+   getImageUrl(imagenNombre: string): string {
+    if (!imagenNombre || imagenNombre.trim() === '') {
+      return 'assets/images/Fondo.jfif';
+    }
+    return `${this.urlUploads}/${imagenNombre}`;
   }
 
   private handleError = (error: HttpErrorResponse): Observable<never> => {

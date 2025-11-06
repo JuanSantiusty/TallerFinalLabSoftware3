@@ -29,7 +29,7 @@
         <div class="card h-100 shadow-sm product-card">
 
           <img
-            [src]="p.imagen || 'assets/images/Fondo.jfif'"
+            [src]="getImageUrl(p.imagen)"
             (error)="onImgError($event)"
             class="card-img-top"
             alt="Imagen del producto">
