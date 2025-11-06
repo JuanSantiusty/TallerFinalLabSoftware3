@@ -11,19 +11,28 @@ import { AuthService } from '../core/auth/auth.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+
   constructor(private router: Router, private auth: AuthService) {}
 
-  isHome() { return this.router.url === '/' || this.router.url.startsWith('/catalogo'); }
-  isAdmin() { return this.auth.isAdmin(); }
-  roleButtonLabel() { return this.isAdmin() ? 'Vista Cliente' : 'Vista Administrador'; }
+  isHome(): boolean {
+    return this.router.url === '/' || this.router.url.startsWith('/catalogo');
+  }
+
+  isAdmin(): boolean {
+    return this.auth.isAdmin();
+  }
+
+  roleButtonLabel(): string {
+    return this.isAdmin() ? 'Vista Cliente' : 'Vista Administrador';
+  }
 
   onRoleButtonClick(): void {
-    const next = this.auth.toggleRole();
-    console.log('[Header] switched to', next);
-    if (next === 'admin') {
-      this.router.navigateByUrl('/admin/productos').then(ok => {
-        if (!ok) this.router.navigateByUrl('/productos/listarProductos'); // alias viejo, por si acaso
-      });
+    const nextRole = this.auth.toggleRole();
+    console.log('[Header] Switched to role:', nextRole);
+
+    if (nextRole === 'admin') {
+      this.router.navigateByUrl('/admin/productos')
+        .catch(() => this.router.navigateByUrl('/productos/listarProductos')); // Alias antiguo
     } else {
       this.router.navigateByUrl('/catalogo');
     }
