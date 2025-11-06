@@ -24,12 +24,11 @@
           <li class="nav-item"><a class="nav-link" routerLink="/ayuda"    routerLinkActive="active">Ayuda</a></li>
         </ul>
 
-        <!-- Selector de vista -->
-        <div class="d-flex gap-2">
-          <a class="btn btn-outline-light btn-sm" routerLink="/catalogo" routerLinkActive="active">Vista Cliente</a>
-          <a class="btn btn-warning btn-sm" routerLink="/admin/productos" routerLinkActive="active">Vista Administrador</a>
-          <!-- Si aún usas el alias viejo, deja también:
-          <a class="btn btn-warning btn-sm" routerLink="/productos/listarProductos">Vista Administrador</a> -->
+        <!-- Botón único: cambia rol y navega -->
+        <div class="d-flex">
+          <button class="btn btn-warning btn-sm" type="button" (click)="onRoleButtonClick()">
+            {{ roleButtonLabel() }}
+          </button>
         </div>
       </div>
     </div>

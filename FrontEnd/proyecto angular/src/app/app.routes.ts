@@ -1,14 +1,12 @@
 import { Routes } from '@angular/router';
-
 import { CatalogoComponent } from './catalogo/catalogo.component';
 import { OfertasComponent } from './ofertas/ofertas.component';
 import { CuponesComponent } from './cupones/cupones.component';
 import { AyudaComponent } from './ayuda/ayuda.component';
-
-// Admin productos (ya lo tienes)
 import { ProductosComponent } from './productos/listarProductos/productos.component';
 import { FormProductoComponent } from './productos/crearProductos/form.component';
 import { FormActualizarComponent } from './productos/actualizarProductos/form-actualizar.component';
+import { AdminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'catalogo', pathMatch: 'full' },
@@ -19,18 +17,19 @@ export const routes: Routes = [
   { path: 'cupones',  component: CuponesComponent },
   { path: 'ayuda',    component: AyudaComponent },
 
-  // Admin
-  { path: 'admin/productos',          component: ProductosComponent },
-  { path: 'admin/productos/crear',    component: FormProductoComponent },
-  { path: 'admin/productos/editar/:id', component: FormActualizarComponent },
-  { path: 'admin/ofertas',            component: OfertasComponent },
-  { path: 'admin/cupones',            component: CuponesComponent },
-  { path: 'admin/ayuda',              component: AyudaComponent },
+  // Admin (todas protegidas con canActivate)
+  { path: 'admin', redirectTo: 'admin/productos', pathMatch: 'full' },
+  { path: 'admin/productos',            component: ProductosComponent,        canActivate: [AdminGuard] },
+  { path: 'admin/productos/crear',      component: FormProductoComponent,     canActivate: [AdminGuard] },
+  { path: 'admin/productos/editar/:id', component: FormActualizarComponent,   canActivate: [AdminGuard] },
+  { path: 'admin/ofertas',              component: OfertasComponent,          canActivate: [AdminGuard] },
+  { path: 'admin/cupones',              component: CuponesComponent,          canActivate: [AdminGuard] },
+  { path: 'admin/ayuda',                component: AyudaComponent,            canActivate: [AdminGuard] },
 
-  // Alias antiguos (si aún los usas en botones viejos)
-  { path: 'productos/listarProductos',   component: ProductosComponent },
-  { path: 'productos/crearProducto',     component: FormProductoComponent },
-  { path: 'productos/editarProducto/:id',component: FormActualizarComponent },
+  // Alias antiguos (también protegidos)
+  { path: 'productos/listarProductos',   component: ProductosComponent,        canActivate: [AdminGuard] },
+  { path: 'productos/crearProducto',     component: FormProductoComponent,     canActivate: [AdminGuard] },
+  { path: 'productos/editarProducto/:id',component: FormActualizarComponent,   canActivate: [AdminGuard] },
 
   { path: '**', redirectTo: 'catalogo' }
 ];
