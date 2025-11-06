@@ -2,66 +2,45 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
     <div class="container-fluid">
+      <!-- Logo / Home -->
+      <a class="navbar-brand" routerLink="/catalogo"><strong>Luxury</strong></a>
 
-      <a class="navbar-brand" [routerLink]="['/catalogo']">
-        <strong>Luxury</strong>
-      </a>
-
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarLuxury"
-        aria-controls="navbarLuxury"
-        aria-expanded="false"
-        aria-label="Toggle navigation">
+      <button class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarLuxury"
+              aria-controls="navbarLuxury"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarLuxury">
+        <!-- Menú principal -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/catalogo" routerLinkActive="active">Catálogo</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#">Ofertas</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#">Cupones</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#">Ayuda</a>
-          </li>
-
+          <li class="nav-item"><a class="nav-link" routerLink="/catalogo" routerLinkActive="active">Catálogo</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/ofertas"  routerLinkActive="active">Ofertas</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/cupones"  routerLinkActive="active">Cupones</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/ayuda"    routerLinkActive="active">Ayuda</a></li>
         </ul>
 
-        <!-- === BOTONES DE CAMBIO DE VISTA === -->
+        <!-- Selector de vista -->
         <div class="d-flex gap-2">
-          <a class="btn btn-outline-light btn-sm"
-             routerLink="/catalogo"
-             routerLinkActive="active">Vista Cliente</a>
-
-          <a class="btn btn-warning btn-sm"
-             routerLink="/productos/listarProductos"
-             routerLinkActive="active">Vista Administrador</a>
+          <a class="btn btn-outline-light btn-sm" routerLink="/catalogo" routerLinkActive="active">Vista Cliente</a>
+          <a class="btn btn-warning btn-sm" routerLink="/admin/productos" routerLinkActive="active">Vista Administrador</a>
+          <!-- Si aún usas el alias viejo, deja también:
+          <a class="btn btn-warning btn-sm" routerLink="/productos/listarProductos">Vista Administrador</a> -->
         </div>
-
       </div>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <section class="hero-section">
+  <!-- Hero SOLO en /catalogo -->
+  <section class="hero-section" *ngIf="isHome()">
     <div class="hero-overlay">
       <div class="hero-content">
         <h1 class="display-4 fw-bold mb-4">Bienvenido a Luxury</h1>
-        <p class="lead mb-4">
-          Descubre la excelencia en cada detalle con nuestros servicios premium
-        </p>
+        <p class="lead mb-4">Descubre la excelencia en cada detalle con nuestros servicios premium</p>
       </div>
     </div>
   </section>

@@ -1,0 +1,33 @@
+:host { display:block; }
+.wrap{
+  min-height:calc(100vh - 160px);
+  display:grid; place-items:center;
+  background:#101214; color:#ececec;
+}
+.card{
+  width:min(720px,92vw);
+  background:#161a1f; border:1px dashed #2b313a;
+  border-radius:18px; padding:34px 30px; text-align:center;
+  box-shadow:0 14px 38px rgba(0,0,0,.35);
+}
+.icon.ticket{ color:#e2b646; margin-bottom:10px; } /* dorado propio de cupones */
+.title{
+  font-family:"Playfair Display", Georgia, serif;
+  font-weight:600; font-size:clamp(24px,5vw,40px); margin:8px 0 6px;
+}
+.subtitle{ color:#c9c9c9; margin:0 0 10px; font-size:15px; }
+.msg{ color:#a6a6a6; margin:0 0 16px; font-size:14px; }
+
+.codes{
+  display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.code{
+  background:#1f2530; color:#fff; border:1px solid #303745;
+  padding:8px 12px; border-radius:10px; font-weight:700; letter-spacing:.5px;
+}
+.code.disabled{
+  opacity:.55; text-decoration: line-through;
+}
+
+.hint small{ color:#8e8e8e; }
