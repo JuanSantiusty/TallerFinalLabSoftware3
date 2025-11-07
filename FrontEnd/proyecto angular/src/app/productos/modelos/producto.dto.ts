@@ -4,5 +4,6 @@ export interface ProductoDTO {
   descripcion: string;
   precio: number;
   idCategoria: number;
-  imagen?: File | null;   
+  disponible: boolean;          
+  imagen?: File | null;
 }

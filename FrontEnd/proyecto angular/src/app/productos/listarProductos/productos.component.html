@@ -1,42 +1,43 @@
 <div class="my-2 text-left">
   <button
-    class="btn btn-rounded btn-primary btncrear"
+    class="btn btn-primary btncrear"
     type="button"
     [routerLink]="['/productos/crearProducto']">
     Crear Producto
   </button>
 </div>
-<h2 class="mb-3">Admin · Productos</h2>
-<!-- tu tabla/lista debajo -->
 
-<div class="card text-white bg-primary mb-3">
+<h2 class="mb-3">Administración de Productos</h2>
+
+<div class="card bg-primary text-white mb-3">
   <div class="card-header">Productos</div>
 
   <div class="card-body">
     <h5 class="card-title">Listado de productos</h5>
 
-    <!-- ✅ Evita error: verificamos que productos exista -->
+    <!-- Mensaje si no hay productos -->
     <div *ngIf="!productos || productos.length === 0" class="alert alert-info">
       No hay productos registrados.
     </div>
 
-    <!-- ✅ Mostrar grid solo si hay productos -->
+    <!-- Grid de productos -->
     <div class="row" *ngIf="productos && productos.length > 0">
+
       <div
         class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
         *ngFor="let p of productos; trackBy: trackById">
 
         <div class="card h-100 shadow-sm product-card">
 
+          <!-- Imagen -->
           <img
             [src]="getImageUrl(p.imagen)"
             (error)="onImgError($event)"
             class="card-img-top"
-            alt="Imagen del producto">
+            [alt]="'Imagen de ' + p.nombre">
 
           <div class="card-body text-dark">
-
-            <h5 class="card-title text-primary fw-bold text-truncate" [title]="p.nombre">
+            <h5 class="card-title fw-bold text-truncate" [title]="p.nombre">
               {{ p.nombre }}
             </h5>
 
@@ -48,20 +49,40 @@
               {{ p.objCategoria?.nombre || 'Sin categoría' }}
             </span>
 
-            <p class="mt-2 fw-bold mb-0">
+            <p class="mt-2 fw-bold mb-2">
               {{ p.precio | currency:'COP':'symbol-narrow' }}
             </p>
 
+            <!-- Estado -->
+            <span class="badge" [ngClass]="p.disponible ? 'bg-success' : 'bg-danger'">
+              {{ p.disponible ? 'Disponible' : 'No disponible' }}
+            </span>
           </div>
 
           <div class="card-footer d-flex justify-content-between">
-            <button class="btn btn-warning btn-sm" (click)="editarProducto(p.id)">Editar</button>
-            <button class="btn btn-danger btn-sm" (click)="eliminarProducto(p.id)">Eliminar</button>
+            <button class="btn btn-warning btn-sm"
+                    type="button"
+                    (click)="editarProducto(p.id)">
+              Editar
+            </button>
+
+            <button class="btn btn-sm"
+                    type="button"
+                    [ngClass]="p.disponible ? 'btn-outline-secondary' : 'btn-outline-success'"
+                    (click)="toggleDisponibilidad(p)">
+              {{ p.disponible ? 'Desactivar' : 'Activar' }}
+            </button>
+
+            <button class="btn btn-danger btn-sm"
+                    type="button"
+                    (click)="eliminarProducto(p.id)">
+              Eliminar
+            </button>
           </div>
 
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
 </div>

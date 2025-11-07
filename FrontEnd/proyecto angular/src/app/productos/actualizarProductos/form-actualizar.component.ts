@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+
 import { Categoria } from '../../categorias/modelos/categoria';
 import { categoriaService } from '../../categorias/servicios/categoria.service';
-import { ProductoService } from '../servicios/Producto.service';     // mantengo tu casing
-import { Producto } from '../modelos/Producto';                       // modelo del back
-import { ProductoDTO } from '../modelos/producto.dto';                // DTO para enviar
+import { ProductoService } from '../servicios/Producto.service';  // o '../servicios/producto.service'
+import { Producto } from '../modelos/Producto';
+import { ProductoDTO } from '../modelos/producto.dto';
 
 @Component({
   selector: 'app-form-actualizar',
@@ -20,21 +21,22 @@ import { ProductoDTO } from '../modelos/producto.dto';                // DTO par
 })
 export class FormActualizarComponent {
 
-  public titulo: string = 'Actualizar producto';
+  public titulo = 'Actualizar producto';
   public categorias: Categoria[] = [];
 
-  // ID del producto que estamos editando
-  private productoId: number = 0;
+  private productoId = 0;
 
-  // Vista previa de imagen (muestra la actual y la nueva si se cambia)
-  public previewUrl: string | ArrayBuffer | null = null;
+  // Previews
+  public previewActualUrl: string | null = null;              // imagen actual (URL del servidor)
+  public previewNuevaUrl: string | ArrayBuffer | null = null; // imagen seleccionada
 
-  // DTO para actualizar (el back acepta multipart si viene imagen)
+  // DTO que enviamos al back (incluye disponible)
   public producto: ProductoDTO = {
     nombre: '',
     descripcion: '',
     precio: 0,
     idCategoria: 0,
+    disponible: true,   // <- importante
     imagen: null
   };
 
@@ -46,17 +48,13 @@ export class FormActualizarComponent {
   ) {}
 
   ngOnInit(): void {
-    // 1) Tomar el id de la URL
     const idParam = this.route.snapshot.paramMap.get('id');
     this.productoId = idParam ? +idParam : 0;
 
-    // 2) Cargar categorías y, cuando estén, cargar el producto
     this.categoriaSrv.getCategorias().subscribe({
       next: (cats) => {
-        this.categorias = cats;
-        if (this.productoId) {
-          this.cargarProducto(this.productoId);
-        }
+        this.categorias = cats ?? [];
+        if (this.productoId) this.cargarProducto(this.productoId);
       },
       error: (err) => console.error('Error cargando categorías:', err)
     });
@@ -65,23 +63,25 @@ export class FormActualizarComponent {
   private cargarProducto(id: number): void {
     this.productoSrv.getProductoById(id).subscribe({
       next: (p: Producto) => {
-        // Llenar el DTO desde el modelo que llega del back
+        // Mapear Producto (del back) -> DTO (para editar)
         this.producto = {
           nombre: p.nombre,
           descripcion: p.descripcion,
           precio: p.precio,
           idCategoria: p.objCategoria ? p.objCategoria.id : 0,
-          imagen: null  // solo enviamos archivo si el usuario cambia
+          disponible: !!(p as any).disponible,  // <- boolean del back
+          imagen: null                           // solo enviamos archivo si usuario cambia
         };
 
-        // Mostrar la imagen actual como preview
-        this.previewUrl = p.imagen || null;
+        // Preview de imagen actual, si tu back guarda el nombre de archivo
+        this.previewActualUrl = p.imagen ? this.productoSrv.getImageUrl(p.imagen) : null;
+        this.previewNuevaUrl = null; // limpia preview nueva al cargar
       },
       error: (err) => console.error('Error cargando producto:', err)
     });
   }
 
-  // Manejo de archivo con vista previa
+  // Manejo de archivo con vista previa (nueva)
   public onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     const file = input.files && input.files.length ? input.files[0] : null;
@@ -89,15 +89,15 @@ export class FormActualizarComponent {
 
     if (file) {
       const reader = new FileReader();
-      reader.onload = () => this.previewUrl = reader.result;
+      reader.onload = () => this.previewNuevaUrl = reader.result;
       reader.readAsDataURL(file);
+    } else {
+      this.previewNuevaUrl = null;
     }
   }
 
   public actualizarProducto(): void {
-    console.log('Actualizando producto', this.producto);
-
-    // Validaciones básicas
+    // Validaciones mínimas
     if (!this.producto.nombre?.trim()) {
       Swal.fire('Validación', 'El nombre es obligatorio', 'warning'); return;
     }
@@ -111,16 +111,16 @@ export class FormActualizarComponent {
       Swal.fire('Validación', 'Selecciona una categoría', 'warning'); return;
     }
 
-    // PUT: si viene imagen -> multipart; si no -> JSON (según tu service)
     this.productoSrv.update({ ...this.producto, id: this.productoId }).subscribe({
       next: (resp) => {
-        console.log('Producto actualizado exitosamente', resp);
-        Swal.fire('Producto actualizado', `Producto ${resp.nombre} actualizado con éxito!`, 'success');
-        this.router.navigate(['/productos/listarProductos']);   // ruta absoluta
+        Swal.fire('Producto actualizado', `Producto ${resp?.nombre ?? ''} actualizado con éxito!`, 'success');
+        // Usa la ruta que tengas vigente
+        this.router.navigate(['/productos/listarProductos']);
+        // this.router.navigate(['/admin/productos']);
       },
       error: (err) => {
-        console.error('Error al actualizar producto:', err?.message || err);
-        // handleError del service ya muestra SweetAlert en 400/404
+        console.error('Error al actualizar producto:', err);
+        // El handleError del service ya muestra SweetAlert si corresponde
       }
     });
   }

@@ -103,3 +103,11 @@
       border: 1px solid #5F6366; /* Color 5 */
       border-left: 4px solid #5F6366; /* Color 5 */
     }
+      :host {
+      display: block;
+      min-height: calc(100vh - 200px); /* Ajuste para empujar el footer */
+    }
+    .card {
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    }
+

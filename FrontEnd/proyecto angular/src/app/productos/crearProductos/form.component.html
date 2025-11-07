@@ -2,9 +2,9 @@
   <div class="card-header">{{ titulo }}</div>
   <div class="card-body">
 
-    <form (ngSubmit)="crearProducto()">
+    <form #f="ngForm" (ngSubmit)="crearProducto()">
       <!-- Nombre -->
-      <div class="form-group row">
+      <div class="form-group row mb-3">
         <label for="nombre" class="col-form-label col-sm-2">Nombre</label>
         <div class="col-sm-6">
           <input id="nombre" type="text" class="form-control"
@@ -12,8 +12,8 @@
         </div>
       </div>
 
-      <!-- Descripción  -->
-      <div class="form-group row">
+      <!-- Descripción -->
+      <div class="form-group row mb-3">
         <label for="descripcion" class="col-form-label col-sm-2">Descripción</label>
         <div class="col-sm-6">
           <textarea id="descripcion" class="form-control" rows="3"
@@ -22,7 +22,7 @@
       </div>
 
       <!-- Precio -->
-      <div class="form-group row">
+      <div class="form-group row mb-3">
         <label for="precio" class="col-form-label col-sm-2">Precio (COP)</label>
         <div class="col-sm-6">
           <input id="precio" type="number" min="0" step="1000" class="form-control"
@@ -31,7 +31,7 @@
       </div>
 
       <!-- Categoría -->
-      <div class="form-group row">
+      <div class="form-group row mb-3">
         <label for="categoria" class="col-form-label col-sm-2">Categoría</label>
         <div class="col-sm-6">
           <select id="categoria" class="form-control"
@@ -44,15 +44,32 @@
         </div>
       </div>
 
+      <!-- Disponible -->
+      <div class="form-group row mb-3">
+        <label class="col-form-label col-sm-2">Estado</label>
+        <div class="col-sm-6 d-flex align-items-center">
+          <div class="form-check">
+            <input
+              id="chkDisponible"
+              type="checkbox"
+              class="form-check-input"
+              [(ngModel)]="producto.disponible"
+              name="disponible">
+            <label for="chkDisponible" class="form-check-label">Disponible</label>
+          </div>
+        </div>
+      </div>
+
       <!-- Imagen -->
-      <div class="form-group row">
+      <div class="form-group row mb-3">
         <label for="imagen" class="col-form-label col-sm-2">Imagen</label>
         <div class="col-sm-6">
-          <input id="imagen" type="file" class="form-control-file"
+          <input id="imagen" type="file" class="form-control"
                  (change)="onFileChange($event)" accept="image/*">
-          <!-- (Opcional) Vista previa -->
+          <!-- Vista previa -->
           <div *ngIf="previewUrl" class="mt-2">
-            <img [src]="previewUrl" alt="Vista previa" style="max-width:220px; max-height:160px; border-radius:6px;">
+            <img [src]="previewUrl" alt="Vista previa"
+                 style="max-width:220px; max-height:160px; border-radius:6px;">
           </div>
         </div>
       </div>
@@ -60,8 +77,9 @@
       <!-- Botones -->
       <div class="form-group row mt-3">
         <div class="col-sm-6">
-          <button type="submit" class="btn btn-primary">Crear</button>
-          <a class="btn btn-secondary ml-2" [routerLink]="['/productos/listarProductos']">Cancelar</a>
+          <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Crear</button>
+          <a class="btn btn-secondary ms-2" [routerLink]="['/productos/listarProductos']">Cancelar</a>
+          <!-- o usa /admin/productos si ya migraste las rutas -->
         </div>
       </div>
     </form>

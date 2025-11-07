@@ -1,5 +1,4 @@
 import { Categoria } from "../../categorias/modelos/categoria";
-
 export class Producto {
   id!: number;
   nombre!: string;
@@ -7,4 +6,6 @@ export class Producto {
   precio!: number; 
   imagen!: string;
   objCategoria: Categoria | null = null; 
+
+  disponible: boolean = true; // ← agregado
 }

@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2';
-import { ProductoService } from '../servicios/Producto.service';    // <-- minúsculas
+import { ProductoService } from '../servicios/Producto.service';   
 import { ProductoDTO } from '../modelos/producto.dto';
 import { Categoria } from '../../categorias/modelos/categoria';
 import { categoriaService } from '../../categorias/servicios/categoria.service';
@@ -18,25 +18,24 @@ import { categoriaService } from '../../categorias/servicios/categoria.service';
     CommonModule,
     SweetAlert2Module,
     HttpClientModule,
-    RouterModule                           
+    RouterModule
   ],
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
 export class FormProductoComponent {
 
-  public titulo: string = 'Crear producto';
+  public titulo = 'Crear producto';
   public categorias: Categoria[] = [];
-
-  
   public previewUrl: string | ArrayBuffer | null = null;
 
-  // DTO crear/actualizar
+  // DTO crear/actualizar (con disponible)
   public producto: ProductoDTO = {
     nombre: '',
     descripcion: '',
     precio: 0,
     idCategoria: 0,
+    disponible: true,       // <- por defecto al crear
     imagen: null
   };
 
@@ -52,7 +51,7 @@ export class FormProductoComponent {
 
   private cargarCategorias(): void {
     this.categoriaSrv.getCategorias().subscribe({
-      next: (cats) => this.categorias = cats,
+      next: (cats) => this.categorias = cats ?? [],
       error: (err) => console.error('Error cargando categorías:', err)
     });
   }
@@ -75,7 +74,7 @@ export class FormProductoComponent {
   public crearProducto(): void {
     console.log('Creando producto', this.producto);
 
-    // Validaciones 
+    // Validaciones mínimas
     if (!this.producto.nombre?.trim()) {
       Swal.fire('Validación', 'El nombre es obligatorio', 'warning'); return;
     }
@@ -90,13 +89,16 @@ export class FormProductoComponent {
     }
 
     this.productoSrv.create(this.producto).subscribe({
-      next: (response) => {
+      next: (response: any) => {
         console.log('Producto creado exitosamente', response);
-        Swal.fire('Nuevo producto', `Producto ${response.nombre} creado con éxito!`, 'success');
+        Swal.fire('Nuevo producto', `Producto ${response?.nombre ?? ''} creado con éxito!`, 'success');
+        // usa el alias viejo o el nuevo según tus rutas
         this.router.navigate(['productos/listarProductos']); 
+        // this.router.navigate(['/admin/productos']);
       },
       error: (err) => {
-        console.error('Error al crear producto:', err?.message || err);
+        console.error('Error al crear producto:', err);
+        Swal.fire('Error', 'No se pudo crear el producto', 'error');
       }
     });
   }

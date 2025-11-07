@@ -45,7 +45,8 @@ export class CatalogoComponent {
   private cargarProductos(): void {
     this.productoSrv.getProductos().subscribe({
       next: (prods) => {
-        this.productos = prods ?? [];
+        // Normaliza disponible a boolean por seguridad
+        this.productos = (prods ?? []).map(p => ({ ...p, disponible: !!p.disponible }));
         this.aplicarFiltro();
       },
       error: (err) => console.error('Error cargando productos:', err)
@@ -56,17 +57,25 @@ export class CatalogoComponent {
     this.aplicarFiltro();
   }
 
-   getImageUrl(imagenNombre: string): string {
-    console.log('Obteniendo URL de imagen para:', imagenNombre);
+  getImageUrl(imagenNombre: string): string {
     return this.productoSrv.getImageUrl(imagenNombre);
   }
 
   private aplicarFiltro(): void {
-    if (this.categoriaSeleccionada === 'Todo') {
-      this.productosFiltrados = [...this.productos];
-      return;
-    }
+  let lista = this.productos.filter(p => p.disponible === true); // ← solo disponibles
+
+  if (this.categoriaSeleccionada !== 'Todo') {
     const idCat = Number(this.categoriaSeleccionada);
-    this.productosFiltrados = this.productos.filter(p => p.objCategoria?.id === idCat);
+    lista = lista.filter(p => p.objCategoria?.id === idCat);
   }
+
+  this.productosFiltrados = [...lista];
+}
+
+  onImgError(event: Event): void {
+  const img = event.target as HTMLImageElement;
+  img.src = 'assets/images/Fondo.jfif';
+  img.onerror = null; // evita loops en caso extremo
+}
+
 }

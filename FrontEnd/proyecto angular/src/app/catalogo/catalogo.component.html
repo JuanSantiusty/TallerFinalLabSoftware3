@@ -37,16 +37,24 @@
            class="row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3">
 
         <div class="col" *ngFor="let p of productosFiltrados">
-          <div class="card h-100 shadow-sm service-card">
+          <div class="card h-100 shadow-sm service-card position-relative">
 
-            <img [src]="p.imagen || 'assets/images/Fondo.jfif'"
-                 onerror="this.onerror=null;this.src='assets/images/Fondo.jfif';"
-                 class="card-img-top"
-                 alt="{{ p.nombre }}"
-                 style="height:130px; object-fit:cover; border-radius:6px;">
+            <!-- Badge “Agotado” si no disponible (por si llega alguno) -->
+            <span *ngIf="!p.disponible"
+                  class="badge bg-danger position-absolute"
+                  style="top:8px; right:8px; z-index:2;">
+              Agotado
+            </span>
+
+            <img
+              [src]="getImageUrl(p.imagen)"
+             (error)="onImgError($event)"
+              class="card-img-top"
+              [alt]="'Imagen de ' + p.nombre"
+              style="height:130px; object-fit:cover; border-radius:6px;">
 
             <div class="card-body p-2">
-              <h6 class="mb-1 text-truncate">{{ p.nombre }}</h6>
+              <h6 class="mb-1 text-truncate" [title]="p.nombre">{{ p.nombre }}</h6>
 
               <span class="badge bg-secondary mb-1">
                 {{ p.objCategoria?.nombre || 'Sin categoría' }}
@@ -56,9 +64,14 @@
                 {{ p.precio | currency:'COP':'symbol-narrow' }}
               </div>
 
-              <p class="text-truncate small mb-2">{{ p.descripcion }}</p>
+              <p class="text-truncate small mb-2" [title]="p.descripcion">{{ p.descripcion }}</p>
 
-              <button class="btn btn-primary btn-sm w-100">Comprar</button>
+              <!-- Botón comprar; deshabilitado si no disponible -->
+              <button class="btn btn-primary btn-sm w-100"
+                      [disabled]="!p.disponible"
+                      [attr.aria-disabled]="!p.disponible">
+                {{ p.disponible ? 'Comprar' : 'No disponible' }}
+              </button>
             </div>
 
           </div>
