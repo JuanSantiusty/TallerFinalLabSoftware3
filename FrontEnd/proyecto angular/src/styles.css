@@ -9,5 +9,20 @@ body {
 footer{    
     padding:15px;
 }
-  
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.app-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
 
