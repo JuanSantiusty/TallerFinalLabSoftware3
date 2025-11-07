@@ -44,6 +44,7 @@ public class ClienteRestController {
 			@RequestParam("descripcion") String descripcion,
 			@RequestParam("precio") Float precio,
 			@RequestParam("idCategoria") Integer idCategoria,
+			@RequestParam("estado") Boolean estado,
 			@RequestParam("imagen") MultipartFile imagen) {
 
 		ServicioDTOPeticion servicioDTO = new ServicioDTOPeticion();
@@ -51,6 +52,7 @@ public class ClienteRestController {
 		servicioDTO.setDescripcion(descripcion);
 		servicioDTO.setPrecio(precio);
 		servicioDTO.setIdCategoria(idCategoria);
+		servicioDTO.setEstado(estado);
 		servicioDTO.setImagenFile(imagen); // Pasamos el archivo
 
 		ServicioDTORespuesta objServicio = servicioService.save(servicioDTO);
@@ -64,18 +66,16 @@ public class ClienteRestController {
 			@RequestParam("descripcion") String descripcion,
 			@RequestParam("precio") Float precio,
 			@RequestParam("idCategoria") Integer idCategoria,
+			@RequestParam("estado") Boolean estado, // Ajusta el tipo según tu entidad
 			@RequestParam(value = "imagen", required = false) MultipartFile imagen) {
 
 		ServicioDTOPeticion servicioDTO = new ServicioDTOPeticion();
 		servicioDTO.setNombre(nombre);
 		servicioDTO.setDescripcion(descripcion);
 		servicioDTO.setPrecio(precio);
-
-		CategoriaDTOPeticion categoriaDTO = new CategoriaDTOPeticion();
-		categoriaDTO.setId(idCategoria);
 		servicioDTO.setIdCategoria(idCategoria);
-
-		servicioDTO.setImagenFile(imagen); // Puede ser null si no se envía nueva imagen
+		servicioDTO.setEstado(estado);
+		servicioDTO.setImagenFile(imagen);
 
 		ServicioDTORespuesta objServicio = servicioService.update(id, servicioDTO);
 		return objServicio;

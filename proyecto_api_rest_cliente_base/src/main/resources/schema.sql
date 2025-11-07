@@ -9,6 +9,7 @@ CREATE TABLE servicios (
     descripcion VARCHAR(255),
     precio FLOAT,
     imagen VARCHAR(255),
+    estado BOOLEAN,
     idCategoria INT,
     FOREIGN KEY (idCategoria) REFERENCES categorias(id)
 );

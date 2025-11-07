@@ -13,6 +13,7 @@ public class ServicioDTOPeticion {
 	private Float precio;
 
 	private Integer idCategoria;
+	private Boolean estado;
 
 	private MultipartFile imagenFile;
 

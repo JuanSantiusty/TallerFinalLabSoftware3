@@ -11,6 +11,7 @@ public class ServicioEntity {
 	private String descripcion;
 	private Float precio;
 	private String imagen;
+	private Boolean estado;
 
 	private CategoriaEntity objCategoria;
 

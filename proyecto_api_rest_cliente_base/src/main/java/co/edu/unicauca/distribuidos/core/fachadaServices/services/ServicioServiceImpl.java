@@ -137,7 +137,7 @@ public class ServicioServiceImpl implements IServicioService {
 		Files.copy(imagen.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
 		// Retornar la ruta relativa o absoluta según tu necesidad
-		return filePath.toString();
+		return fileName;
 	}
 
 	@Override
@@ -145,34 +145,45 @@ public class ServicioServiceImpl implements IServicioService {
 		ServicioEntity servicioActualizado = null;
 		Optional<ServicioEntity> servicioEntityOp = this.servicioAccesoBaseDatos.findById(id);
 
+
+
 		if(servicioEntityOp.isPresent()) {
 			ServicioEntity objServicioExistente = servicioEntityOp.get();
 
-			// Actualizar campos básicos
 			objServicioExistente.setNombre(servicioDTO.getNombre());
 			objServicioExistente.setDescripcion(servicioDTO.getDescripcion());
 			objServicioExistente.setPrecio(servicioDTO.getPrecio());
-			objServicioExistente.setObjCategoria(new CategoriaEntity(servicioDTO.getIdCategoria(),""));
 
-			// Actualizar categoría
+
 			if (servicioDTO.getIdCategoria() != null) {
 				CategoriaEntity categoriaEntity = new CategoriaEntity();
 				categoriaEntity.setId(servicioDTO.getIdCategoria());
 				objServicioExistente.setObjCategoria(categoriaEntity);
 			}
 
-			// Manejar la imagen: si se envía nueva imagen, guardarla y actualizar ruta
+
+			objServicioExistente.setEstado(servicioDTO.getEstado());
+
+
 			if (servicioDTO.getImagenFile() != null && !servicioDTO.getImagenFile().isEmpty()) {
 				try {
 					String rutaImagen = guardarImagen(servicioDTO.getImagenFile());
 					objServicioExistente.setImagen(rutaImagen);
 				} catch (IOException e) {
 					System.out.println("Error al guardar la nueva imagen: " + e.getMessage());
-					// Puedes decidir si lanzar excepción o continuar con la imagen anterior
 				}
 			}
-			// Si no se envía nueva imagen, se mantiene la imagen existente
 
+
+			System.out.println("🔍 VALORES A ACTUALIZAR:");
+			System.out.println("ID: " + id);
+			System.out.println("Nombre: " + objServicioExistente.getNombre());
+			System.out.println("Descripción: " + objServicioExistente.getDescripcion());
+			System.out.println("Precio: " + objServicioExistente.getPrecio());
+			System.out.println("Estado: " + objServicioExistente.getEstado());
+			System.out.println("Categoría ID: " + (objServicioExistente.getObjCategoria() != null ?
+					objServicioExistente.getObjCategoria().getId() : "NULL"));
+			System.out.println("Imagen: " + objServicioExistente.getImagen());
 
 			Optional<ServicioEntity> optionalServicio = this.servicioAccesoBaseDatos.update(id, objServicioExistente);
 			if (optionalServicio.isPresent()) {

@@ -15,6 +15,7 @@ public class ServicioDTORespuesta {
 	private String descripcion;
 	private Float precio;
 	private String imagen;
+	private Boolean estado;
 	
 	private CategoriaDTORespuesta objCategoria;
 }

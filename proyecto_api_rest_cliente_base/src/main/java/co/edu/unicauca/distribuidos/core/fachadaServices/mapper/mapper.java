@@ -18,6 +18,7 @@ public class mapper {
                     mapper.map(ServicioDTOPeticion::getPrecio, ServicioEntity::setPrecio);
                     // Ignorar el campo imagenFile ya que lo manejamos manualmente
                     mapper.skip(ServicioEntity::setImagen);
+                    mapper.map(ServicioDTOPeticion::getEstado, ServicioEntity::setEstado);
                 });
         return objMapeador;//El objeto retornado se almacena en el contenedor de Spring
     }

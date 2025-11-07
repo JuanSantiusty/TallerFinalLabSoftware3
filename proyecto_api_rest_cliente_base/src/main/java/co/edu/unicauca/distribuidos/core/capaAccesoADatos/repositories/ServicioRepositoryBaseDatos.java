@@ -20,15 +20,7 @@ public class ServicioRepositoryBaseDatos {
         conexionABaseDeDatos = new ConexionBD();
     }
 
-    /**
-     * 
-     * @author: Daniel Eduardo Paz Perafán
-     * @version: 09/12/2024
-     * @param cliente El parámetro encapsula la información del cliente a registrar
-     *                en el sistema
-     * @return si el cliente se registro correctamente, el método retorna el cliente
-     *         con los datos registrados,null en caso contrario
-     */
+
 
      public ServicioEntity save(ServicioEntity objServicio) {
         System.out.println("registrando servicio en base de datos");
@@ -40,13 +32,14 @@ public class ServicioRepositoryBaseDatos {
             conexionABaseDeDatos.conectar();
 
             PreparedStatement sentencia = null;
-            String consulta = "insert into servicios(nombre, descripcion, precio, imagen,idCategoria) values(?,?,?,?,?)";
+            String consulta = "insert into servicios(nombre, descripcion, precio, imagen,estado,idCategoria) values(?,?,?,?,?,?)";
             sentencia = conexionABaseDeDatos.getConnection().prepareStatement(consulta, Statement.RETURN_GENERATED_KEYS);
             sentencia.setString(1, objServicio.getNombre());
             sentencia.setString(2, objServicio.getDescripcion());
             sentencia.setFloat(3, objServicio.getPrecio());
             sentencia.setString(4, objServicio.getImagen());
-            sentencia.setInt(5,objServicio.getObjCategoria().getId());
+            sentencia.setBoolean(5,objServicio.getEstado());
+            sentencia.setInt(6,objServicio.getObjCategoria().getId());
             System.out.println(sentencia);
             resultado = sentencia.executeUpdate();
             
@@ -92,6 +85,7 @@ public class ServicioRepositoryBaseDatos {
                 objServicio.setDescripcion(res.getString("descripcion"));
                 objServicio.setPrecio(res.getFloat("precio"));
                 objServicio.setImagen(res.getString("imagen"));
+                objServicio.setEstado(res.getBoolean("estado"));
                 objServicio.setObjCategoria(new CategoriaEntity(res.getInt("idCategoria"), res.getString("nombreCategoria")));
                 servicios.add(objServicio);
             }
@@ -124,6 +118,7 @@ public class ServicioRepositoryBaseDatos {
                 objServicio.setDescripcion(res.getString("descripcion"));
                 objServicio.setPrecio(res.getFloat("precio"));
                 objServicio.setImagen(res.getString("imagen"));
+                objServicio.setEstado(res.getBoolean("estado"));
                 objServicio.setObjCategoria(new CategoriaEntity(res.getInt("idCategoria"), res.getString("nombre")));
             }
             sentencia.close();
@@ -147,6 +142,7 @@ public class ServicioRepositoryBaseDatos {
                     + "servicios.descripcion=?,"
                     + "servicios.precio=?,"
                     + "servicios.imagen=?,"
+                    + "servicios.estado=?,"
                     + "servicios.idCategoria=? "
                     + "where servicios.id=?";
             sentencia = conexionABaseDeDatos.getConnection().prepareStatement(consulta);
@@ -155,8 +151,9 @@ public class ServicioRepositoryBaseDatos {
             sentencia.setString(2, objServicio.getDescripcion());
             sentencia.setFloat(3, objServicio.getPrecio());
             sentencia.setString(4, objServicio.getImagen());
-            sentencia.setInt(5, objServicio.getObjCategoria().getId());
-            sentencia.setInt(6, idServicio);
+            sentencia.setBoolean(5, objServicio.getEstado());
+            sentencia.setInt(6, objServicio.getObjCategoria().getId());
+            sentencia.setInt(7, idServicio);
             resultado = sentencia.executeUpdate();
             sentencia.close();
             conexionABaseDeDatos.desconectar();
@@ -211,6 +208,7 @@ public class ServicioRepositoryBaseDatos {
                 objServicio.setDescripcion(res.getString("descripcion"));
                 objServicio.setPrecio(res.getFloat("precio"));
                 objServicio.setImagen(res.getString("imagen"));
+                objServicio.setEstado(res.getBoolean("estado"));
                 objServicio.setObjCategoria(new CategoriaEntity(res.getInt("idCategoria"), res.getString("nombre")));
                 servicios.add(objServicio);
             }
