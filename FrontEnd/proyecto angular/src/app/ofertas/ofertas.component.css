@@ -6,12 +6,12 @@
 }
 .card{
   width:min(720px,92vw);
-  background:#13161a; border:1px solid #1d2126;
+  background:#ededee; border:1px solid #1d2126;
   border-radius:18px; padding:32px 28px; text-align:center;
   box-shadow:0 14px 38px rgba(0,0,0,.35);
 }
 .icon{ display:grid; place-items:center; margin-bottom:10px; }
-.icon.promo{ color:#ffbf47; } /* dorado cálido para “promos” */
+.icon.promo{ color:#4755a1; } /* dorado cálido para “promos” */
 .title{
   font-family: "Playfair Display", Georgia, serif;
   font-weight:600; font-size:clamp(24px,5vw,40px); margin:8px 0 6px;
@@ -19,7 +19,7 @@
 .subtitle{ color:#cfcfcf; margin:0 0 10px; font-size:15px; }
 .msg{ color:#a5a5a5; margin:0 0 14px; font-size:14px; }
 .cta button{
-  background:#ffbf47; color:#191919; border:none; border-radius:10px;
+  background:#4755a1; color:#f4f2f2; border:none; border-radius:10px;
   padding:10px 16px; font-weight:600; cursor:pointer;
 }
 .cta button:hover{ filter:brightness(.95); }

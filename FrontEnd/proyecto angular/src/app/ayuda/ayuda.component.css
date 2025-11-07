@@ -1,26 +1,33 @@
-:host { display:block; }
-.wrap{
-  min-height:calc(100vh - 160px);
-  display:grid; place-items:center;
-  background:#121315; color:#ededed;
+:host {
+  display: block;
+  width: 100%;
+}
+
+.wrap {
+  width: 100vw;               /* Fuerza ancho total, sin depender del padre */
+  min-height: calc(100vh - 140px); /* Ajusta si tu navbar/footer tienen otra altura */
+  background: #121315;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 0;
 }
 .card{
-  width:min(720px,92vw);
-  background:#17191d; border:1px solid #242831;
-  border-radius:18px; padding:34px 30px; text-align:center;
-  box-shadow:0 14px 38px rgba(0,0,0,.35);
+  width: min(720px, 92vw);
+  background: #e6e9f0;
+  border: 1px solid #242831;
+  border-radius: 18px;
+  padding: 34px 30px;
+  text-align: center;
+  box-shadow: 0 14px 38px rgba(0,0,0,.35);
 }
-.icon.tools{ color:#d4a017; margin-bottom:10px; } /* dorado distinto al de ofertas */
-.title{
-  font-family: "Playfair Display", Georgia, serif;
-  font-weight:600; font-size:clamp(24px,5vw,40px); margin:8px 0 6px;
-}
-.subtitle{ color:#c9c9c9; margin:0 0 10px; font-size:15px; }
-.msg{ color:#a7a7a7; margin:0 0 16px; font-size:14px; }
+
+/* lo demás tal cual */
+.icon.tools{ color:#4755a1; margin-bottom:10px; }
+.title{ font-family:"Playfair Display", Georgia, serif; font-weight:600; font-size:clamp(24px,5vw,40px); margin:8px 0 6px; }
+.subtitle{ color:#515151; margin:0 0 10px; font-size:15px; }
+.msg{ color:#787777; margin:0 0 16px; font-size:14px; }
 .links{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-.links a{
-  text-decoration:none; background:#2b2f37; color:#fff;
-  padding:10px 14px; border-radius:10px; font-weight:600;
-}
-.links a.secondary{ background:#30343b; }
+.links a{ text-decoration:none; background:#596088; color:#fff; padding:10px 14px; border-radius:10px; font-weight:600; }
+.links a.secondary{ background:#2a367a; }
 .links a:hover{ filter:brightness(1.05); }

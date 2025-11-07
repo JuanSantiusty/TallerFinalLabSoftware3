@@ -26,3 +26,16 @@ main {
 }
 
 
+main.container-fluid,
+main.container {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+:root {
+  --nav-height: 90px; /* Ajusta según qué tan grande quieras el navbar */
+}
+
+body {
+  padding-top: var(--nav-height);
+}
+
