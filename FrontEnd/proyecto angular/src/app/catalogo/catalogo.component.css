@@ -2,7 +2,7 @@
 :root {
   --color-1: #24292F;
   --color-2: #D7DBE4;
-  --color-3: #FBFFFF;
+  --color-3: #fbfbff;
   --color-4: #151515;
   --color-5: #5F6366;
 }
@@ -71,14 +71,16 @@
 /* Botón Comprar */
 .btn-buy,
 .service-card button {
-  background-color: var(--color-1) !important;
-  color: var(--color-3);
+  background-color: #4755a1 !important;  /* 🔹 Azul principal */
+  color: #ffffff !important;
   border-radius: 6px;
   border: none;
-  padding: 8px;
-  margin-top: auto;
+  padding: 8px 12px;
+  font-weight: 600;
+  transition: all 0.25s ease-in-out;
   cursor: pointer;
 }
+
 
 .btn-buy:hover,
 .service-card button:hover {
