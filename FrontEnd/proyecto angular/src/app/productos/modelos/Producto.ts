@@ -6,6 +6,7 @@ export class Producto {
   precio!: number; 
   imagen!: string;
   objCategoria: Categoria | null = null; 
+  estado!: boolean;
 
   disponible: boolean = true; // ← agregado
 }

@@ -76,7 +76,7 @@ export class ProductoService {
     form.append('descripcion', dto.descripcion);
     form.append('precio', String(dto.precio));
     form.append('idCategoria', String(dto.idCategoria));
-    form.append('disponible', String(dto.disponible));      // "true" | "false"
+    form.append('estado', String(dto.estado));      // "true" | "false"
 
     if ('id' in dto && dto.id != null) {
       form.append('id', String(dto.id));

@@ -6,5 +6,6 @@ export interface Producto {
     descripcion: string;
     precio: number;
     imagen: string;
+    estado: boolean;
     objCategoria: Categoria;
 }

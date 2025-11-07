@@ -49,8 +49,8 @@
         <label class="col-form-label col-sm-2">Disponible</label>
         <div class="col-sm-6 d-flex align-items-center">
           <input type="checkbox" class="form-check-input me-2"
-                 [(ngModel)]="producto.disponible" name="disponible">
-          <span>{{ producto.disponible ? 'Sí, está disponible' : 'No está disponible' }}</span>
+                 [(ngModel)]="producto.estado" name="disponible">
+          <span>{{ producto.estado ? 'Sí, está disponible' : 'No está disponible' }}</span>
         </div>
       </div>
 

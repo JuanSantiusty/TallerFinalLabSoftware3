@@ -46,7 +46,7 @@ export class CatalogoComponent {
     this.productoSrv.getProductos().subscribe({
       next: (prods) => {
         // Normaliza disponible a boolean por seguridad
-        this.productos = (prods ?? []).map(p => ({ ...p, disponible: !!p.disponible }));
+        this.productos = (prods ?? []).map(p => ({ ...p, estado: !!p.estado }));
         this.aplicarFiltro();
       },
       error: (err) => console.error('Error cargando productos:', err)
@@ -62,7 +62,7 @@ export class CatalogoComponent {
   }
 
   private aplicarFiltro(): void {
-  let lista = this.productos.filter(p => p.disponible === true); // ← solo disponibles
+  let lista = this.productos.filter(p => p.estado === true); // ← solo disponibles
 
   if (this.categoriaSeleccionada !== 'Todo') {
     const idCat = Number(this.categoriaSeleccionada);

@@ -35,7 +35,7 @@ export class FormProductoComponent {
     descripcion: '',
     precio: 0,
     idCategoria: 0,
-    disponible: true,       // <- por defecto al crear
+    estado: true,       // <- por defecto al crear
     imagen: null
   };
 

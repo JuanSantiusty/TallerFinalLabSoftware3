@@ -40,7 +40,7 @@
           <div class="card h-100 shadow-sm service-card position-relative">
 
             <!-- Badge “Agotado” si no disponible (por si llega alguno) -->
-            <span *ngIf="!p.disponible"
+            <span *ngIf="!p.estado"
                   class="badge bg-danger position-absolute"
                   style="top:8px; right:8px; z-index:2;">
               Agotado
@@ -68,9 +68,9 @@
 
               <!-- Botón comprar; deshabilitado si no disponible -->
               <button class="btn btn-primary btn-sm w-100"
-                      [disabled]="!p.disponible"
-                      [attr.aria-disabled]="!p.disponible">
-                {{ p.disponible ? 'Comprar' : 'No disponible' }}
+                      [disabled]="!p.estado"
+                      [attr.aria-disabled]="!p.estado">
+                {{ p.estado ? 'Comprar' : 'No disponible' }}
               </button>
             </div>
 

@@ -36,7 +36,7 @@ export class FormActualizarComponent {
     descripcion: '',
     precio: 0,
     idCategoria: 0,
-    disponible: true,   // <- importante
+    estado: true,   // <- importante
     imagen: null
   };
 
@@ -69,7 +69,7 @@ export class FormActualizarComponent {
           descripcion: p.descripcion,
           precio: p.precio,
           idCategoria: p.objCategoria ? p.objCategoria.id : 0,
-          disponible: !!(p as any).disponible,  // <- boolean del back
+          estado: !!(p as any).disponible,  // <- boolean del back
           imagen: null                           // solo enviamos archivo si usuario cambia
         };
 

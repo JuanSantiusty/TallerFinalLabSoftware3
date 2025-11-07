@@ -54,8 +54,8 @@
             </p>
 
             <!-- Estado -->
-            <span class="badge" [ngClass]="p.disponible ? 'bg-success' : 'bg-danger'">
-              {{ p.disponible ? 'Disponible' : 'No disponible' }}
+            <span class="badge" [ngClass]="p.estado ? 'bg-success' : 'bg-danger'">
+              {{ p.estado ? 'Disponible' : 'No disponible' }}
             </span>
           </div>
 
@@ -68,9 +68,9 @@
 
             <button class="btn btn-sm"
                     type="button"
-                    [ngClass]="p.disponible ? 'btn-outline-secondary' : 'btn-outline-success'"
+                    [ngClass]="p.estado ? 'btn-outline-secondary' : 'btn-outline-success'"
                     (click)="toggleDisponibilidad(p)">
-              {{ p.disponible ? 'Desactivar' : 'Activar' }}
+              {{ p.estado ? 'Desactivar' : 'Activar' }}
             </button>
 
             <button class="btn btn-danger btn-sm"
